@@ -3,19 +3,19 @@
  <div class="c-team">
      <ul class="o-team">
        <li v-show="visibility"><h2>Team A</h2></li>
-        <li :class="player.class" v-for='(player, index) in teamCreated(this.team, "A")' :key="index" ><!--  v-if="index <= 4" -->
+        <li :class="player.class" v-for='(player, index) in team' :key="index" v-if="index <= 4"><!--  v-if="index <= 4" -->
           {{player.firstName + " " + player.lastName}}<br/>
           <span>Ratings: {{player.rating}}</span>
         </li>
-        <li v-show="visibility">Team Rating: {{totalRating("A")}}</li>
+        <!-- <li v-show="visibility">Team Rating: {{totalRating("A")}}</li> -->
      </ul>
      <ul class="o-team">
        <li v-show="visibility"><h2>Team B</h2></li>
-       <li :class="player.class" v-for='(player, index) in team' :key="index" ><!--  v-if="index >= 5" -->
+       <li :class="player.class" v-for='(player, index) in team' :key="index" v-if="index >= 5"><!--  v-if="index >= 5" -->
          {{player.firstName + " " + player.lastName}}<br/>
          <span>Ratings: {{player.rating}}</span>
         </li>
-        <li v-show="visibility">Team Rating: {{totalRating("B")}}</li>
+        <!-- <li v-show="visibility">Team Rating: {{totalRating("B")}}</li> -->
      </ul>
      <button @click="createTeam()">Create Team</button>
  </div>
@@ -26,11 +26,7 @@ export default {
   name: 'Team',
   data () {
     return{
-      teamA: [],
-      teamB: [],
       team:[],
-      teamRating: [],
-      rateClass: "",
       visibility: false
     }
   },
@@ -38,25 +34,6 @@ export default {
     playersList: {}
   },
   methods: {
-    // createTeam(){
-    //   this.teamA= [];
-    //   this.teamB= [];
-    //   let random;
-    //   let counter;
-    //   for(counter=0; counter < 10; counter++){
-    //     random = Math.floor(Math.random() * 541) + 1;
-    //     if(this.teamA.length != 5){
-    //       // this.isExisting(this.teamA, counter);                   
-    //       this.teamA.push(this.playersList[random]);
-    //       this.createRating(this.teamA, counter);
-    //     }else{
-    //       // this.isExisting(this.teamB, counter);
-    //       this.teamB.push(this.playersList[random]);
-    //       this.createRating(this.teamB, counter);
-    //     }
-    //   }
-    //   this.visibility = true;
-    // },
     createTeam(){
       this.team = [];
       let counter;
@@ -64,75 +41,30 @@ export default {
       for(counter=0; counter < 10; counter++){
         random = Math.floor(Math.random() * 541) + 1;
         this.team.push(this.playersList[random]);
-        this.createRating(this.team, counter);
+        // this.createRating(this.team, counter);
       }
       this.visibility = true;
-      // console.log(this.team);
+      this.teamCreated;
     },
-    // isExisting(team, playerSelect){
-    //   let x = 5;
-    //   if(team === this.teamB){
-    //     playerSelect = playerSelect - x;
-    //     x--;
-    //   }
-    //   console.log(team[playerSelect].playerId);
-      
-    //   team.map((k,v) => {
-    //       return `ID ${team[k]}playerId;
-    //   })
-    // },
-    createRating(team, playerSelect){
-      let rating;
-      // let x = 5;
-      rating = Math.floor(Math.random() * (90 - 70)) + 70;
-      
-      // if(team === this.teamB){
-      //   playerSelect = playerSelect - x;
-      //   x--;
+    segTeam(player, index){
+      // let teamX;
+      // let counter;
+      // for(counter = 0; counter < 4; counter++){
+
       // }
-      team[playerSelect].rating = rating;
-      this.assignClass(team, playerSelect, rating);
+      console.log(player);
+      console.log(index);
+      if(index <=4){
+        this.teamX.push(player);
+      }
       
-    },
-    assignClass(team, playerSelect, rating){
-      if (rating == 90){
-        this.rateClass = "color--green";
-      }else if (rating <= 89 && rating >= 80){
-        this.rateClass = "color--orange";
-      }else if(rating <= 79) {
-        this.rateClass = "color--red";
-      }
-      team[playerSelect].class = this.rateClass;
-    },
-    totalRating(team){
-      let total = 0;
-      let counter;
-      let sort;
-      if(team == "A"){
-        sort = 4;
-      }else{
-        sort = 9;
-      }
-      for(counter=0; counter<sort.length; counter++){
-          total += team[counter].rating;
-          // console.log(team[counter].rating);
-      }
-      return Math.round(total/team.length);
-    },
-    teamCreated(teamArray, teamName){
-      let teamX = [];
-      let counter;
-      if(teamName == "A"){
-        for(counter=0; counter <= 4; counter++){
-         console.log(teamArray[counter]);
-        }
-      }
-      console.log(teamX);
-      return teamX;
     }
   },
   computed: {
-    
+    teamCreated(){
+        console.log(this.team);
+        this.team.map(this.segTeam);
+    }
   }
 }
 </script>
