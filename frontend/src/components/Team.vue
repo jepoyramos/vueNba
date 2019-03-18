@@ -1,8 +1,9 @@
+
 <template>
  <div class="c-team">
      <ul class="o-team">
        <li v-show="visibility"><h2>Team A</h2></li>
-        <li :class="player.class" v-for='(player, index) in team' :key="index" v-if="index <= 4">
+        <li :class="player.class" v-for='(player, index) in teamCreated(this.team, "A")' :key="index" ><!--  v-if="index <= 4" -->
           {{player.firstName + " " + player.lastName}}<br/>
           <span>Ratings: {{player.rating}}</span>
         </li>
@@ -10,7 +11,7 @@
      </ul>
      <ul class="o-team">
        <li v-show="visibility"><h2>Team B</h2></li>
-       <li :class="player.class" v-for='(player, index) in team' :key="index" v-if="index >= 5">
+       <li :class="player.class" v-for='(player, index) in team' :key="index" ><!--  v-if="index >= 5" -->
          {{player.firstName + " " + player.lastName}}<br/>
          <span>Ratings: {{player.rating}}</span>
         </li>
@@ -66,7 +67,7 @@ export default {
         this.createRating(this.team, counter);
       }
       this.visibility = true;
-      console.log(this.team);
+      // console.log(this.team);
     },
     // isExisting(team, playerSelect){
     //   let x = 5;
@@ -114,13 +115,24 @@ export default {
       }
       for(counter=0; counter<sort.length; counter++){
           total += team[counter].rating;
+          // console.log(team[counter].rating);
       }
       return Math.round(total/team.length);
+    },
+    teamCreated(teamArray, teamName){
+      let teamX = [];
+      let counter;
+      if(teamName == "A"){
+        for(counter=0; counter <= 4; counter++){
+         console.log(teamArray[counter]);
+        }
+      }
+      console.log(teamX);
+      return teamX;
     }
   },
   computed: {
-    teamCreated(){
-    }
+    
   }
 }
 </script>
