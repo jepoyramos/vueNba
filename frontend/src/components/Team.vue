@@ -1,21 +1,20 @@
-
 <template>
  <div class="c-team">
      <ul class="o-team">
        <li v-show="visibility"><h2>Team A</h2></li>
-        <li :class="player.class" v-for='(player, index) in team' :key="index" v-if="index <= 4"><!--  v-if="index <= 4" -->
+        <li :class="player.class" v-for='(player, index) in team.slice(0, 5)' :key="index" >
           {{player.firstName + " " + player.lastName}}<br/>
           <span>Ratings: {{player.rating}}</span>
         </li>
-        <!-- <li v-show="visibility">Team Rating: {{totalRating("A")}}</li> -->
+        <li v-show="visibility">Team Rating: {{totalRating(team.slice(0, 5))}}</li>
      </ul>
      <ul class="o-team">
        <li v-show="visibility"><h2>Team B</h2></li>
-       <li :class="player.class" v-for='(player, index) in team' :key="index" v-if="index >= 5"><!--  v-if="index >= 5" -->
+       <li :class="player.class" v-for='(player, index) in team.slice(5, 10)' :key="index" >
          {{player.firstName + " " + player.lastName}}<br/>
          <span>Ratings: {{player.rating}}</span>
         </li>
-        <!-- <li v-show="visibility">Team Rating: {{totalRating("B")}}</li> -->
+        <li v-show="visibility">Team Rating: {{totalRating(team.slice(5, 10))}}</li>
      </ul>
      <button @click="createTeam()">Create Team</button>
  </div>
@@ -38,33 +37,47 @@ export default {
       this.team = [];
       let counter;
       let random;
+      let currentPlayerID;
       for(counter=0; counter < 10; counter++){
         random = Math.floor(Math.random() * 541) + 1;
-        this.team.push(this.playersList[random]);
-        // this.createRating(this.team, counter);
+        this.newPLayer = this.playersList[random];
+        currentPlayerID = this.newPLayer.playerId;
+        if(this.isExisting(currentPlayerID) === false){
+          this.team.push(this.newPLayer);
+          this.createRating(counter);
+        }else{
+          // console.log("player " + currentPlayerID + " Existing");
+        }
       }
       this.visibility = true;
-      this.teamCreated;
     },
-    segTeam(player, index){
-      // let teamX;
-      // let counter;
-      // for(counter = 0; counter < 4; counter++){
-
-      // }
-      console.log(player);
-      console.log(index);
-      if(index <=4){
-        this.teamX.push(player);
+    isExisting(player){
+      let existing = this.team.some(el => el.playerId === player);
+      return existing;
+    },
+    createRating(playerSelect){
+      let rating = Math.floor(Math.random() * (90 - 70)) + 70;
+      this.team[playerSelect].rating = rating;
+      this.assignClass(playerSelect, rating);
+    },
+     totalRating(team){
+      let total = 0;
+      let counter;
+      for(counter=0; counter<team.length; counter++){
+          total += team[counter].rating;
       }
-      
-    }
-  },
-  computed: {
-    teamCreated(){
-        console.log(this.team);
-        this.team.map(this.segTeam);
-    }
+      return Math.round(total/team.length);
+    },
+    assignClass(playerSelect, rating){
+      if (rating == 90 || rating >= 85){
+        this.rateClass = "color--green";
+      }else if (rating <= 84 && rating >= 80){
+        this.rateClass = "color--orange";
+      }else if(rating <= 79) {
+        this.rateClass = "color--red";
+      }
+      this.team[playerSelect].class = this.rateClass;
+    }  
   }
 }
 </script>
