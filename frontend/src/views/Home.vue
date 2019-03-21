@@ -12,13 +12,13 @@ import players from '../assets/json/players.json'
 
 export default {
   name: 'home',
+  components: {
+    Team
+  },
   data () {
     return {
       players: players,
     }
-  },
-  components: {
-    Team
   }
 }
 </script>
