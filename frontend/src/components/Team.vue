@@ -7,20 +7,20 @@
       </div>
     </flickity>
      <ul class="o-team">
-       <li v-show="visibility"><h2>Team A</h2></li>
+       <li v-if="visibility"><h2>Team A</h2></li>
         <li :class="player.class" v-for='(player, index) in team.slice(0, 5)' :key="index" >
           {{player.firstName + " " + player.lastName}}<br/>
           <span>Ratings: {{player.rating}}</span>
         </li>
-        <li v-show="visibility">Team Rating: {{totalRating(team.slice(0, 5))}}</li>
+        <li v-if="visibility">Team Rating: {{totalRating(team.slice(0, 5))}}</li>
      </ul>
      <ul class="o-team">
-       <li v-show="visibility"><h2>Team B</h2></li>
+       <li v-if="visibility"><h2>Team B</h2></li>
        <li :class="player.class" v-for='(player, index) in team.slice(5, 10)' :key="index" >
          {{player.firstName + " " + player.lastName}}<br/>
          <span>Ratings: {{player.rating}}</span>
         </li>
-        <li v-show="visibility">Team Rating: {{totalRating(team.slice(5, 10))}}</li>
+        <li v-if="visibility">Team Rating: {{totalRating(team.slice(5, 10))}}</li>
      </ul>
      <button @click="createTeam()">Create Team</button>
  </div>
