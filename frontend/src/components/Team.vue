@@ -1,11 +1,10 @@
 <template>
  <div class="c-team">
-    <flickity ref="flickity" :options="flickityOptions">
-      <div class="carousel-cell">Slide 1</div>
-      <div class="carousel-cell">Slide 2</div>
-      <div class="carousel-cell">Slide 3</div>
-      <div class="carousel-cell">Slide 4</div>
-      <div class="carousel-cell">Slide 5</div>
+    <flickity v-if="Object.keys(playerStanding).length > 0" ref="flickity" :options="flickityOptions">
+      <div v-for='(player, index) in playerStanding.slice(0, 3)' :key="index" class="carousel-cell">
+        <span>{{player.firstName + " " + player.lastName}}<br/>
+        {{player.rating}}</span>
+      </div>
     </flickity>
      <ul class="o-team">
        <li v-show="visibility"><h2>Team A</h2></li>
@@ -38,13 +37,14 @@ export default {
   data () {
     return{
       team:[],
+      playerStanding:[],
       visibility: false,
       flickityOptions: {
         initialIndex: 1,
         prevNextButtons: true,
         pageDots: false,
-        wrapAround: true
-        
+        wrapAround: true,
+        autoPlay: true
       }
     }
   },
@@ -99,35 +99,12 @@ export default {
       this.team[playerSelect].class = this.rateClass;
     },
     getTopRates(){
-      let counter;
-      let allRates=[];
-      for(counter=0; counter < this.team.length; counter++){
-        allRates.push(this.team[counter].rating);
-      }
-
-      //!!!!!create array using spread for sorting!!!!!
-
-      // console.log(allRates);
-      // console.log(Math.max(allRates));
-      // let x = Math.max.apply(
-      //     Math, this.team.map(
-      //       function(o) { 
-      //         return o.rating; 
-      //       }
-      //     )
-      //   );
-      // console.log(x);
-
-      // asd
-      this.team.sort(function(playerY,playerX){
+      this.playerStanding.push(...this.team);      
+      this.playerStanding.sort(function(playerY,playerX){
         if(playerY.rating < playerX.rating){ return 1; } 
         else if(playerY.rating == playerX.rating) { return 0; } 
         else { return -1; }
       });
-      console.log(this.team);
-      console.log(this.team[0].rating + " " + this.team[1].rating + " " + this.team[2].rating);
-      // console.log(allRates[0] + " " + allRates[1] + " " + allRates[2]);
-
     },
     next() {
       this.$refs.flickity.next();
@@ -188,18 +165,9 @@ export default {
     text-align: center;
     color: white;
   }
-
-  /* .carousel-cell{
-    background-color: teal;
-    width: 100%;
-    height: 300px;
-    color: white;
-  } */
-
   .carousel {
     background: #EEE;
   }
-
   .carousel-cell {
     width: 66%;
     height: 200px;
@@ -207,15 +175,13 @@ export default {
     background: #8C8;
     border-radius: 5px;
     counter-increment: carousel-cell;
-  }
-
-  /* cell number */
-  .carousel-cell:before {
-    display: block;
-    text-align: center;
-    content: counter(carousel-cell);
-    line-height: 200px;
-    font-size: 80px;
-    color: white;
+    span{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: white;
+      font-size: 40px;
+    }
   }
 </style>
